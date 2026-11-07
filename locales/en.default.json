@@ -1,0 +1,15 @@
+{
+  "general": {
+    "skip": "Skip to content",
+    "tagged": "Tagged \"{{ tags }}\"",
+    "page": "Page {{ page }}",
+    "cart": "Cart",
+    "search": "Search",
+    "continue_shopping": "Continue shopping"
+  },
+  "products": {
+    "add_to_cart": "Add to cart",
+    "sold_out": "Sold out",
+    "from": "From"
+  }
+}

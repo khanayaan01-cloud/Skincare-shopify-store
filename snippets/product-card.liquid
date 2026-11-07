@@ -1,0 +1,21 @@
+{%- comment -%} Usage: render the product-card snippet with a product variable {%- endcomment -%}
+<article class="card">
+  <a href="{{ product.url }}" class="card__media">
+    {%- if product.featured_image -%}
+      <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" loading="lazy" width="600">
+    {%- else -%}
+      <div class="placeholder">{{ 'product-1' | placeholder_svg_tag }}</div>
+    {%- endif -%}
+    {%- unless product.available -%}<span class="badge">{{ 'products.sold_out' | t }}</span>{%- endunless -%}
+    {%- if product.compare_at_price > product.price and product.available -%}<span class="badge badge--sale">Sale</span>{%- endif -%}
+  </a>
+  <div class="card__info">
+    <h3 class="card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+    <p class="card__price">
+      {%- if product.compare_at_price > product.price -%}
+        <s>{{ product.compare_at_price | money }}</s>
+      {%- endif -%}
+      {{ product.price | money }}
+    </p>
+  </div>
+</article>

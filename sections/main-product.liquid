@@ -1,0 +1,59 @@
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+<section class="product page-width">
+  <div class="product__grid">
+    <div class="product__media">
+      {%- for media in product.media -%}
+        {%- if media.media_type == 'image' -%}
+          <img src="{{ media | image_url: width: 900 }}" alt="{{ media.alt | default: product.title | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" width="900">
+        {%- endif -%}
+      {%- else -%}
+        <div class="placeholder">{{ 'product-1' | placeholder_svg_tag }}</div>
+      {%- endfor -%}
+    </div>
+
+    <div class="product__info">
+      {%- if product.vendor != blank -%}<p class="eyebrow">{{ product.vendor }}</p>{%- endif -%}
+      <h1>{{ product.title }}</h1>
+      <p class="product__price" data-price>
+        {%- if current_variant.compare_at_price > current_variant.price -%}
+          <s>{{ current_variant.compare_at_price | money }}</s>
+        {%- endif -%}
+        {{ current_variant.price | money }}
+      </p>
+      <p class="product__tax">Inclusive of all taxes. Shipping calculated at checkout.</p>
+
+      {% form 'product', product, class: 'product__form' %}
+        {%- unless product.has_only_default_variant -%}
+          <label for="variant-select">{{ product.options_with_values.first.name }}</label>
+          <select id="variant-select" name="id">
+            {%- for variant in product.variants -%}
+              <option value="{{ variant.id }}"{% if variant == current_variant %} selected{% endif %}{% unless variant.available %} disabled{% endunless %}>
+                {{ variant.title }} - {{ variant.price | money }}{% unless variant.available %} ({{ 'products.sold_out' | t }}){% endunless %}
+              </option>
+            {%- endfor -%}
+          </select>
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+        {%- endunless -%}
+
+        <label for="qty">Quantity</label>
+        <input id="qty" type="number" name="quantity" value="1" min="1" class="qty">
+
+        <button type="submit" class="btn btn--full"{% unless current_variant.available %} disabled{% endunless %}>
+          {%- if current_variant.available -%}{{ 'products.add_to_cart' | t }}{%- else -%}{{ 'products.sold_out' | t }}{%- endif -%}
+        </button>
+        {{ form | payment_button }}
+      {% endform %}
+
+      <div class="rte product__desc">{{ product.description }}</div>
+      <p class="product__note">Do a patch test before first use. Stop using and consult a doctor if irritation occurs.</p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,38 @@
+<section class="benefits">
+  <div class="page-width benefits__grid">
+    {%- for block in section.blocks -%}
+      <div class="benefit" {{ block.shopify_attributes }}>
+        <h3>{{ block.settings.title }}</h3>
+        <p>{{ block.settings.text }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Benefits",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Gentle formulas" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Made for daily use on most skin types." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Benefits",
+      "blocks": [
+        { "type": "benefit", "settings": { "title": "Simple routine", "text": "Just a few steps that fit into your day." } },
+        { "type": "benefit", "settings": { "title": "Gentle formulas", "text": "Made for daily use on most skin types." } },
+        { "type": "benefit", "settings": { "title": "Fast shipping", "text": "Quick delivery across India." } },
+        { "type": "benefit", "settings": { "title": "Easy returns", "text": "Help is a message away if something is wrong." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

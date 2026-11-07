@@ -1,0 +1,54 @@
+<section class="section page-width">
+  <div class="section__head">
+    <h2>{{ section.settings.heading }}</h2>
+  </div>
+
+  <div class="categories">
+    {%- for block in section.blocks -%}
+      {%- assign c = block.settings.collection -%}
+      {%- assign img = block.settings.image | default: c.featured_image -%}
+      <a class="category" href="{{ c.url | default: routes.all_products_collection_url }}" {{ block.shopify_attributes }}>
+        <div class="category__media">
+          {%- if img -%}
+            <img src="{{ img | image_url: width: 600 }}" alt="{{ img.alt | default: c.title | escape }}" loading="lazy" width="600">
+          {%- else -%}
+            <div class="placeholder">{{ 'collection-1' | placeholder_svg_tag }}</div>
+          {%- endif -%}
+        </div>
+        <span class="category__title">{{ block.settings.title | default: c.title | default: 'Category' }}</span>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop by category",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by category" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Image (optional, otherwise collection image)" },
+        { "type": "text", "id": "title", "label": "Title (optional, otherwise collection name)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop by category",
+      "blocks": [
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,51 @@
+<footer class="site-footer">
+  <div class="page-width site-footer__grid">
+    <div>
+      <h3 class="site-footer__brand">{{ shop.name }}</h3>
+      <p>{{ section.settings.about }}</p>
+      <ul class="social">
+        {%- if settings.social_instagram != blank -%}<li><a href="{{ settings.social_instagram }}" target="_blank" rel="noopener">Instagram</a></li>{%- endif -%}
+        {%- if settings.social_facebook != blank -%}<li><a href="{{ settings.social_facebook }}" target="_blank" rel="noopener">Facebook</a></li>{%- endif -%}
+        {%- if settings.social_youtube != blank -%}<li><a href="{{ settings.social_youtube }}" target="_blank" rel="noopener">YouTube</a></li>{%- endif -%}
+      </ul>
+    </div>
+
+    <div>
+      <h4>Quick links</h4>
+      <ul>
+        {%- for link in linklists[section.settings.menu].links -%}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    <div>
+      <h4>Stay in the glow</h4>
+      {% form 'customer', class: 'footer-form' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        {%- if form.posted_successfully? -%}
+          <p class="form-ok">Thanks for subscribing!</p>
+        {%- endif -%}
+        <div class="inline-form">
+          <input type="email" name="contact[email]" placeholder="Your email" aria-label="Email" required>
+          <button type="submit" class="btn">Join</button>
+        </div>
+      {% endform %}
+    </div>
+  </div>
+
+  <div class="page-width site-footer__bottom">
+    <small>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</small>
+    <small>Patch test before first use. Individual results may vary.</small>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "textarea", "id": "about", "label": "About text", "default": "Simple, gentle skincare made for everyday glow." },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+  ]
+}
+{% endschema %}
